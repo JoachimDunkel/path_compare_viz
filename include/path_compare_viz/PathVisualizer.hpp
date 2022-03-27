@@ -4,7 +4,7 @@
 #include <string>
 #include <geometry_msgs/PoseStamped.h>
 
-namespace path_estimation_groundtruth_viz
+namespace path_compare_viz
 {  
 class PathVisualizer{
 

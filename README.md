@@ -1,1 +1,1 @@
-path_estimation_groundtruth_viz
+path_compare_viz

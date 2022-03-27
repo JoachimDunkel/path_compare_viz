@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <package format="2">
-  <name>path_estimation_groundtruth_viz</name>
+  <name>path_compare_viz</name>
   <version>0.0.0</version>
   <description>
     This repository tries to provide an easy way for comparing estimated 

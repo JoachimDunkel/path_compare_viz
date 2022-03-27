@@ -1,6 +1,6 @@
-#include "path_estimation_groundtruth_viz/PathVisualizer.hpp"
+#include "path_compare_viz/PathVisualizer.hpp"
 
-namespace path_estimation_groundtruth_viz
+namespace path_compare_viz
 {
 
 PathVisualizer::PathVisualizer(

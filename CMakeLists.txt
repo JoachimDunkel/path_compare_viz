@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.0.2)
-project(path_estimation_groundtruth_viz)
+project(path_compare_viz)
 
 set(CMAKE_CXX_STANDARD 14)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -77,7 +77,7 @@ install(DIRECTORY include/${PROJECT_NAME}/
 
 # # Add gtest based cpp test target and link libraries
 # catkin_add_gtest(${PROJECT_NAME}-test 
-# test/test_path_estimation_groundtruth_viz.cpp)
+# test/test_path_compare_viz.cpp)
 # if(TARGET ${PROJECT_NAME}-test)
 #   target_link_libraries(${PROJECT_NAME}-test ${PROJECT_NAME})
 # endif()

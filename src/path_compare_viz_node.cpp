@@ -1,12 +1,12 @@
 #include <ros/ros.h>
-#include "path_estimation_groundtruth_viz/PathVisualizer.hpp"
+#include "path_compare_viz/PathVisualizer.hpp"
 
-using namespace path_estimation_groundtruth_viz;
+using namespace path_compare_viz;
 
 int main(int argc, char** argv)
 {
     // Initialize ROS
-    ros::init (argc, argv, "path_estimation_groundtruth_viz");
+    ros::init (argc, argv, "path_compare_viz");
     ros::NodeHandle n;
 
     // PathVisualizer estimated_path_visualizer();
