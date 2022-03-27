@@ -18,51 +18,65 @@ PathVisualizer::PathVisualizer(
       nodeHandle_(handle)
 {
     pathPublisher_ = nodeHandle_.advertise<nav_msgs::Path>(path_target_topic, 1);
-    if(source_type == SOURCE_TYPE::POSE){
+
+    switch (source_type)
+    {
+    case POSE:
         poseSubscriber_ = nodeHandle_
             .subscribe(pose_source_topic, 1, &PathVisualizer::poseCallback, this);
-    }
-    else{
-        poseStampedSubscriber_ = nodeHandle_
-            .subscribe(pose_source_topic, 1, &PathVisualizer::poseStampedCallback, this);
-    }
+        break;
 
+    case POSESTAMPED:
+        poseSubscriber_ = nodeHandle_
+            .subscribe(pose_source_topic, 1, &PathVisualizer::poseStampedCallback, this);
+        break;
+
+    case ODOMETRY:
+        poseSubscriber_ = nodeHandle_
+            .subscribe(pose_source_topic, 1, &PathVisualizer::odomCallback, this);
+        break;
+    
+    default:
+        ROS_ERROR("Unhandled source_type, shutting down.");
+        ros::requestShutdown();
+    }
     ROS_INFO("%s Started.", tag_.c_str());
 }
 
-//This is not pose stamped since gazebo ground truths will be published as Pose
+
 void PathVisualizer::poseCallback(const geometry_msgs::Pose& msg) 
 {
-    ROS_INFO("%s Recieved pose callback", tag_.c_str());
-    //promote to poseStamped (take current time-stamp)
-
-    //if the current pose does not diverge enough from the last pose ignore callback
-
-    //possible also ignore msgs that are to close to each other on a time basis if to many msgs 
-    //start existing.
-
-    //when we get a message store it in vector
-    //send path.
+    auto current_pose = promotePose(msg);
+    processPose(current_pose);
 }
 
 void PathVisualizer::poseStampedCallback(const geometry_msgs::PoseStamped& msg)
 {
-    //ROS_INFO("%s Recieved poseStamped callback", tag_.c_str());
+    processPose(msg);
+}
 
+void PathVisualizer::odomCallback(const nav_msgs::Odometry& msg)
+{
+    auto current_pose = promotePose(msg.pose.pose);
+    processPose(current_pose);
+}
+
+void PathVisualizer::processPose(const geometry_msgs::PoseStamped& pose) 
+{
     if(storedPoses_.size() < 1){
-        storedPoses_.push_back(msg);
+        storedPoses_.push_back(pose);
         return;
     }
 
     auto last_stored_pose = storedPoses_.back();
-    if(!enoughDifference(msg.pose, last_stored_pose.pose)){
+    if(!enoughDifference(pose.pose, last_stored_pose.pose)){
         return;
     }
 
-    storedPoses_.push_back(msg);
+    storedPoses_.push_back(pose);
 
     nav_msgs::Path path;
-    path.header.frame_id = pathTargetTopic_;
+    path.header.frame_id = "map";
     path.header.stamp = ros::Time(0);
 
     path.poses = storedPoses_;
@@ -73,6 +87,16 @@ void PathVisualizer::poseStampedCallback(const geometry_msgs::PoseStamped& msg)
 double angleDiff(const double & a, const double & b) 
 {
     return atan2(sin(a - b), cos(a - b));  //see  https://stackoverflow.com/questions/1878907/how-can-i-find-the-difference-between-two-angles
+}
+
+geometry_msgs::PoseStamped PathVisualizer::promotePose(const geometry_msgs::Pose& pose)
+{
+    geometry_msgs::PoseStamped current_pose;
+    current_pose.header.frame_id = "map";
+    current_pose.header.stamp = ros::Time(0);
+
+    current_pose.pose = pose;
+    return current_pose;
 }
 
 bool PathVisualizer::enoughDifference(const geometry_msgs::Pose& currentPose, const geometry_msgs::Pose& lastPose) 

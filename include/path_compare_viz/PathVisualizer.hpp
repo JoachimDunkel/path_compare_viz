@@ -4,12 +4,14 @@
 #include <string>
 #include <geometry_msgs/PoseStamped.h>
 #include <geometry_msgs/Pose.h>
+#include <nav_msgs/Odometry.h>
 
 namespace path_compare_viz
 {  
 enum SOURCE_TYPE{
     POSE = 0,
     POSESTAMPED = 1,
+    ODOMETRY = 2
 };
 
 class PathVisualizer{
@@ -24,8 +26,11 @@ class PathVisualizer{
 
         void poseCallback(const geometry_msgs::Pose& msg);
         void poseStampedCallback(const geometry_msgs::PoseStamped& msg);
+        void odomCallback(const nav_msgs::Odometry& msg);
 
     private:
+        void processPose(const geometry_msgs::PoseStamped& pose);
+        geometry_msgs::PoseStamped promotePose(const geometry_msgs::Pose& pose);
         bool enoughDifference(const geometry_msgs::Pose& currentPose, const geometry_msgs::Pose& lastPose);
 
         const std::string tag_;
@@ -34,8 +39,6 @@ class PathVisualizer{
 
         ros::NodeHandle & nodeHandle_;
         ros::Subscriber poseSubscriber_;
-        ros::Subscriber poseStampedSubscriber_;
-
         ros::Publisher pathPublisher_;
 
         std::vector<geometry_msgs::PoseStamped> storedPoses_;
