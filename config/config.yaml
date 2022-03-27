@@ -1,0 +1,5 @@
+topic_estimated_source_pose: "base_link_pf"
+topic_estimated_target_path: "base_link_pf_path"
+
+topic_ground_truth_source_pose: "base_link_real"
+topic_ground_truth_target_path: "base_link_real_path"
