@@ -1,8 +1,8 @@
 topic_estimated_source_pose: "base_link_pf"
-topic_estimated_target_path: "base_link_pf_path"
+topic_estimated_target_path: "estimated_path"
 
-topic_ground_truth_source_pose: "base_link_real"
-topic_ground_truth_target_path: "base_link_real_path"
+topic_ground_truth_source_pose: "/ground_truth_broadcaster/pose"  #"base_link_real"
+topic_ground_truth_target_path: "real_path"
 
 #//TODO find better way then with integers
 # enum SOURCE_TYPE{
@@ -10,5 +10,5 @@ topic_ground_truth_target_path: "base_link_real_path"
 #     POSESTAMPED = 1,
 #     ODOMETRY = 2
 # };
-estimation_source_type: 0
-ground_truth_source_type: 2
+estimation_source_type: 1
+ground_truth_source_type: 1
