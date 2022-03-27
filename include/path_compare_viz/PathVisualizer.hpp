@@ -26,10 +26,11 @@ class PathVisualizer{
         void poseStampedCallback(const geometry_msgs::PoseStamped& msg);
 
     private:
+        bool enoughDifference(const geometry_msgs::Pose& currentPose, const geometry_msgs::Pose& lastPose);
+
         const std::string tag_;
         const std::string poseSourceTopic_;
         const std::string pathTargetTopic_;
-
 
         ros::NodeHandle & nodeHandle_;
         ros::Subscriber poseSubscriber_;

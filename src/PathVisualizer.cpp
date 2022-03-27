@@ -1,5 +1,7 @@
 #include "path_compare_viz/PathVisualizer.hpp"
 #include <nav_msgs/Path.h>
+#include <math.h>
+#include <tf/tf.h>
 
 namespace path_compare_viz
 {
@@ -45,8 +47,45 @@ void PathVisualizer::poseCallback(const geometry_msgs::Pose& msg)
 
 void PathVisualizer::poseStampedCallback(const geometry_msgs::PoseStamped& msg)
 {
-    ROS_INFO("%s Recieved poseStamped callback", tag_.c_str());
+    //ROS_INFO("%s Recieved poseStamped callback", tag_.c_str());
 
+    if(storedPoses_.size() < 1){
+        storedPoses_.push_back(msg);
+        return;
+    }
+
+    auto last_stored_pose = storedPoses_.back();
+    if(!enoughDifference(msg.pose, last_stored_pose.pose)){
+        return;
+    }
+
+    storedPoses_.push_back(msg);
+
+    nav_msgs::Path path;
+    path.header.frame_id = pathTargetTopic_;
+    path.header.stamp = ros::Time(0);
+
+    path.poses = storedPoses_;
+
+    pathPublisher_.publish(path);
+}
+
+double angleDiff(const double & a, const double & b) 
+{
+    return atan2(sin(a - b), cos(a - b));  //see  https://stackoverflow.com/questions/1878907/how-can-i-find-the-difference-between-two-angles
+}
+
+bool PathVisualizer::enoughDifference(const geometry_msgs::Pose& currentPose, const geometry_msgs::Pose& lastPose) 
+{
+    double dist_thresh = 0.001; //1 mm
+    double angle_thresh = 0.002; // 1°
+
+    double x_diff = fabs(currentPose.position.x) - fabs(lastPose.position.x);
+    double y_diff = fabs(currentPose.position.y) - fabs(lastPose.position.y);
+
+    double theta_diff = angleDiff(tf::getYaw(currentPose.orientation), tf::getYaw(lastPose.orientation));
+
+    return (x_diff > dist_thresh || y_diff > dist_thresh || theta_diff > angle_thresh);
 }
 
 
