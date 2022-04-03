@@ -13,10 +13,7 @@
 
   <maintainer email="dunkel@student.tugraz.at">Joachim Dunkel</maintainer>
 
-  <!-- One license tag required, multiple allowed, one license per tag -->
-  <!-- Commonly used license strings: -->
-  <!--   BSD, MIT, Boost Software License, GPLv2, GPLv3, LGPLv2.1, LGPLv3 -->
-  <license>TODO</license>
+  <license>MIT License</license>
 
   <author email="dunkel@student.tugraz.at">Joachim Dunkel</author>
 
