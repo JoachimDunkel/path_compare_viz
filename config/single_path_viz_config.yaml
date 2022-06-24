@@ -1,0 +1,12 @@
+#//TODO find better way then with integers
+# enum SOURCE_TYPE{
+#     POSE = 0,
+#     POSESTAMPED = 1,
+#     ODOMETRY = 2
+# };
+source_type: 1
+
+source_pose: "/ground_truth_broadcaster/pose"   # The message to collect
+target_path: "visualized_path" # Path is visualized for that message.
+
+frame_id_to_publish: "base_link_real"

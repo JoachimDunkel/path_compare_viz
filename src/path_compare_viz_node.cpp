@@ -21,8 +21,11 @@ int main(int argc, char** argv)
     n.getParam("estimation_source_type", estimation_source_type);
     n.getParam("ground_truth_source_type", ground_truth_source_type);
 
-    PathVisualizer estimated_path_visualizer("[ESTIMATION VISUALIZER]", static_cast<SOURCE_TYPE>(estimation_source_type) , estimate_source, estimate_target, n);
-    PathVisualizer ground_truth_visualizer("[GROUND_TRUTH VISUALIZER]", static_cast<SOURCE_TYPE>(ground_truth_source_type), ground_truth_source, ground_truth_target, n);
+	std::string frame_id;
+	n.getParam("frame_id_to_publish", frame_id);
+
+    PathVisualizer estimated_path_visualizer(frame_id, "[ESTIMATION VISUALIZER]", static_cast<SOURCE_TYPE>(estimation_source_type) , estimate_source, estimate_target, n);
+    PathVisualizer ground_truth_visualizer(frame_id, "[GROUND_TRUTH VISUALIZER]", static_cast<SOURCE_TYPE>(ground_truth_source_type), ground_truth_source, ground_truth_target, n);
 
     //TODO possibly we only want to send data once on shut down hook or something.s
 

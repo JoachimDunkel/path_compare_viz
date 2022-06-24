@@ -1,0 +1,9 @@
+<launch>
+	<!-- TODO only get default params from config and make node configurable from launch file -->
+	<rosparam file="$(find path_compare_viz)/config/single_path_viz_config.yaml" />
+
+	<node pkg="path_compare_viz" type="single_path_visualizer" name="single_path_viz" output="screen" />
+	<!-- <node pkg="path_compare_viz" type="path_compare_viz" name="path_visualization" output="screen" /> -->
+
+
+</launch>

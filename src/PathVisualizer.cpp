@@ -6,13 +6,15 @@
 namespace path_compare_viz
 {
 
-PathVisualizer::PathVisualizer(   
+PathVisualizer::PathVisualizer( 
+	const std::string frame_id_to_publish,  
     const std::string & tag,         
     SOURCE_TYPE source_type,
     const std::string &pose_source_topic,
     const std::string &path_target_topic,
     ros::NodeHandle& handle) 
-    : tag_(tag),
+    : frame_id_to_publish_(frame_id_to_publish),
+	  tag_(tag),
       poseSourceTopic_(pose_source_topic),
       pathTargetTopic_(path_target_topic),
       nodeHandle_(handle)

@@ -4,7 +4,11 @@ project(path_compare_viz)
 set(CMAKE_CXX_STANDARD 14)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
+set(SINGLE_PATH_VISUALIZER single_path_visualizer)
+
 add_definitions(-Wno-deprecated-declarations -Wno-comment -Wno-deprecated -Wall -Werror )
+
+
 
 
 find_package(catkin REQUIRED COMPONENTS
@@ -48,6 +52,7 @@ target_link_libraries(${PROJECT_NAME}_core
   ${catkin_LIBRARIES}
 )
 
+#PATH COMPARE
 add_executable(${PROJECT_NAME}
   src/${PROJECT_NAME}_node.cpp
 )
@@ -61,10 +66,23 @@ add_dependencies(${PROJECT_NAME}
   ${catkin_EXPORTED_TARGETS}
 )
 
+#SINGLE PATH VISUALIZATION
+add_executable(${SINGLE_PATH_VISUALIZER}
+	src/${SINGLE_PATH_VISUALIZER}_node.cpp
+)
+
+target_link_libraries(${SINGLE_PATH_VISUALIZER}
+  ${PROJECT_NAME}_core
+  ${catkin_LIBRARIES}
+)
+
+add_dependencies(${SINGLE_PATH_VISUALIZER}
+  ${catkin_EXPORTED_TARGETS}
+)
 
 
 ## Mark libraries for installation
-install(TARGETS ${PROJECT_NAME} ${PROJECT_NAME}_core
+install(TARGETS ${SINGLE_PATH_VISUALIZER} ${PROJECT_NAME} ${PROJECT_NAME}_core
   ARCHIVE DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
   LIBRARY DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
   RUNTIME DESTINATION ${CATKIN_GLOBAL_BIN_DESTINATION}
@@ -76,10 +94,3 @@ install(DIRECTORY include/${PROJECT_NAME}/
   FILES_MATCHING PATTERN "*.hpp"
 )
 
-
-# # Add gtest based cpp test target and link libraries
-# catkin_add_gtest(${PROJECT_NAME}-test 
-# test/test_path_compare_viz.cpp)
-# if(TARGET ${PROJECT_NAME}-test)
-#   target_link_libraries(${PROJECT_NAME}-test ${PROJECT_NAME})
-# endif()

@@ -1,7 +1,7 @@
 <launch>
-    <!-- TODO only get default params from config and make node configurable from launch file -->
-    <rosparam file="$(find path_compare_viz)/config/config.yaml" />
+	<!-- TODO only get default params from config and make node configurable from launch file -->
+	<rosparam file="$(find path_compare_viz)/config/path_compare_config.yaml" />
 
-    <node pkg="path_compare_viz" type="path_compare_viz" name="path_visualization" output="screen" />
+	<node pkg="path_compare_viz" type="path_compare_viz" name="path_visualization" output="screen" />
 
 </launch>
