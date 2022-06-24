@@ -15,5 +15,8 @@ topic_ground_truth_target_path: "real_path"
 estimation_source_type: 1  #Here we expected our source type to be geometry_msgs::PoseStamped
 ground_truth_source_type: 1
 
-
 frame_id_to_publish: "map"
+
+# Pose separation thresholds
+dist_threshold: 0.01 #1cm 
+angle_threshold: 0.1 #~5°

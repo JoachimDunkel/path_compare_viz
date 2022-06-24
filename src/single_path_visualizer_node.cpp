@@ -18,8 +18,13 @@ int main(int argc, char** argv)
 	std::string frame_id;
 	n.getParam("frame_id_to_publish", frame_id);
 
-    PathVisualizer estimated_path_visualizer(frame_id, "[SINGLE PATH VISUALIZER]",
-		 static_cast<SOURCE_TYPE>(source_type) , source_pose, target_path, n);
+	double dist_thresh, angle_thresh;
+	n.getParam("dist_threshold", dist_thresh);
+	n.getParam("angle_threshold", angle_thresh);
+
+    PathVisualizer estimated_path_visualizer("[SINGLE PATH VISUALIZER]", frame_id,
+		 static_cast<SOURCE_TYPE>(source_type) , source_pose, target_path,
+		 dist_thresh, angle_thresh, n);
 
 
     ros::spin();

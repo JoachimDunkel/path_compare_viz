@@ -10,3 +10,7 @@ source_pose: "/ground_truth_broadcaster/pose"   # The message to collect
 target_path: "visualized_path" # Path is visualized for that message.
 
 frame_id_to_publish: "base_link_real"
+
+# Pose separation thresholds
+dist_threshold: 0.01 #1cm 
+angle_threshold: 0.1 #~5°

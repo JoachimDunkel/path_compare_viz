@@ -7,17 +7,21 @@ namespace path_compare_viz
 {
 
 PathVisualizer::PathVisualizer( 
-	const std::string frame_id_to_publish,  
-    const std::string & tag,         
-    SOURCE_TYPE source_type,
-    const std::string &pose_source_topic,
-    const std::string &path_target_topic,
+	const std::string & tag,
+	const std::string frame_id_to_publish,
+	SOURCE_TYPE source_type,
+	const std::string &pose_source_topic,
+	const std::string &path_target_topic,
+	const double dist_threshold,
+	const double angle_threshold,
     ros::NodeHandle& handle) 
-    : frame_id_to_publish_(frame_id_to_publish),
-	  tag_(tag),
-      poseSourceTopic_(pose_source_topic),
-      pathTargetTopic_(path_target_topic),
-      nodeHandle_(handle)
+	:	tag_(tag),
+		frame_id_to_publish_(frame_id_to_publish),
+		poseSourceTopic_(pose_source_topic),
+		pathTargetTopic_(path_target_topic),
+		dist_threshold_(dist_threshold),
+		angle_threshold_(angle_threshold),
+		nodeHandle_(handle)
 {
     pathPublisher_ = nodeHandle_.advertise<nav_msgs::Path>(path_target_topic, 1);
 
@@ -103,15 +107,12 @@ geometry_msgs::PoseStamped PathVisualizer::promotePose(const geometry_msgs::Pose
 
 bool PathVisualizer::enoughDifference(const geometry_msgs::Pose& currentPose, const geometry_msgs::Pose& lastPose) 
 {
-    double dist_thresh = 0.001; //1 mm
-    double angle_thresh = 0.002; // 1°
-
     double x_diff = fabs(currentPose.position.x) - fabs(lastPose.position.x);
     double y_diff = fabs(currentPose.position.y) - fabs(lastPose.position.y);
 
     double theta_diff = angleDiff(tf::getYaw(currentPose.orientation), tf::getYaw(lastPose.orientation));
 
-    return (x_diff > dist_thresh || y_diff > dist_thresh || theta_diff > angle_thresh);
+    return (x_diff > dist_threshold_ || y_diff > dist_threshold_ || theta_diff > angle_threshold_);
 }
 
 

@@ -18,11 +18,13 @@ class PathVisualizer{
 
     public:
         explicit PathVisualizer(
-			const std::string frame_id_to_publish,
             const std::string & tag,
+			const std::string frame_id_to_publish,
             SOURCE_TYPE source_type,
             const std::string &pose_source_topic,
             const std::string &path_target_topic,
+			const double dist_threshold,
+			const double angle_threshold,
             ros::NodeHandle& handle);
 
         void poseCallback(const geometry_msgs::Pose& msg);
@@ -34,10 +36,13 @@ class PathVisualizer{
         geometry_msgs::PoseStamped promotePose(const geometry_msgs::Pose& pose);
         bool enoughDifference(const geometry_msgs::Pose& currentPose, const geometry_msgs::Pose& lastPose);
 
-		const std::string frame_id_to_publish_;
         const std::string tag_;
+		const std::string frame_id_to_publish_;
         const std::string poseSourceTopic_;
         const std::string pathTargetTopic_;
+
+		const double dist_threshold_;
+		const double angle_threshold_;
 
         ros::NodeHandle & nodeHandle_;
         ros::Subscriber poseSubscriber_;
